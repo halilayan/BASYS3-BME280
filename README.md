@@ -24,7 +24,7 @@ A fully synchronous FPGA-based environmental monitoring system that reads temper
                                    └────────┬────────┘
                                             │ UART
                                    ┌────────▼────────┐
-                                   │  bme280_parse   │
+                                   │  bme_280_data   │
                                    │   (Python)      │
                                    └─────────────────┘
 ```
@@ -40,7 +40,7 @@ All four modules are wired together in `top_level.vhd`.
 ├── bme280_controller.vhd    # BME280 init, calibration readout, and periodic ADC burst reads
 ├── uart_tx.vhd              # 8-N-2 UART transmitter
 ├── top_level.vhd            # Top-level instantiation and UART sequencer
-└── bme280_parse.py          # Python parser: compensation, printing, and plotting
+└── bme_280_data.py          # Python parser: compensation, printing, and plotting
 ```
 
 ---
@@ -113,12 +113,12 @@ The SPI CS line is managed by `bme280_controller`; the `cs_o` pin from `spi_mast
 
 ---
 
-## Python Companion Script — `bme280_parse.py`
+## Python Companion Script — `bme_280_data.py`
 
 Paste the raw hex dump received over UART into the `hex_data` string at the top of the file, then run:
 
 ```bash
-python bme280_parse.py
+python bme_280_data.py
 ```
 
 The script:
@@ -161,14 +161,14 @@ The script:
 ### Data Capture & Plotting
 
 1. Open a serial terminal at **115200 8-N-2** and capture the raw output to a file, or copy the hex stream.
-2. Paste the hex string into `hex_data` in `bme280_parse.py`.
+2. Paste the hex string into `hex_data` in `bme_280_data.py`.
 3. Install dependencies if needed:
    ```bash
    pip install matplotlib
    ```
 4. Run the script:
    ```bash
-   python bme280_parse.py
+   python bme_280_data.py
    ```
 
 ---
